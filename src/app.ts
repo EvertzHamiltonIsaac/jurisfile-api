@@ -72,7 +72,7 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 // ─── Health check ─────────────────────────────────────────────
-app.get('/health', async (_req, res) => {
+app.get('/health', async (_req: import('express').Request, res: import('express').Response) => {
   try {
     await getPool();
     res.json({

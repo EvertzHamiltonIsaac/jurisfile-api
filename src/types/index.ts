@@ -140,3 +140,13 @@ export interface PaginatedResponse<T> {
   limit: number;
   totalPages: number;
 }
+
+export interface DataCaseTeam {
+  usuario_id: number;
+  nombre: string;
+  apellido: string;
+  email: string;
+  role_name: string;
+  rol_en_caso: string;
+  asignado_en: string; // ISO date string
+}

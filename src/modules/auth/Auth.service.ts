@@ -17,7 +17,7 @@ export async function login(email: string, password: string): Promise<string> {
             u.email,
             u.password_hash,
             u.activo,
-            r.nombre AS role_name
+            r.nombre AS rol_name
         FROM [Usuario] u
             INNER JOIN Rol r ON u.rol_id = r.rol_id
         WHERE u.email = @email
@@ -58,8 +58,8 @@ export async function login(email: string, password: string): Promise<string> {
   const expiresvalue = process.env.JWT_EXPIRES_IN;
   if (!expiresvalue) throw new Error('JWT_EXPIRES_IN not configured.');
 
-  console.log(process.env.JWT_SECRET, process.env.JWT_EXPIRES_IN);
-
+  // console.log(process.env.JWT_SECRET, process.env.JWT_EXPIRES_IN);
+  // console.log(payload);
   const token = jwt.sign(payload, secret, {
     expiresIn: `24h`,
   });

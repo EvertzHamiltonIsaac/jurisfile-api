@@ -34,7 +34,7 @@ export async function getPool(): Promise<sql.ConnectionPool> {
   try {
     pool = await new sql.ConnectionPool(dbConfig).connect();
 
-    pool.on('error', (err) => {
+    pool.on('error', (err: Error) => {
       console.error('[DB] Pool error:', err);
       pool = null;
     });

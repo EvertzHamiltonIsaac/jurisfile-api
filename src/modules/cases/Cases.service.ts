@@ -1,6 +1,6 @@
 import { string } from 'zod';
 import { query, sql } from '../../config/database';
-import { CaseWithDetails } from '../../types';
+import { CaseWithDetails, DataCaseTeam } from '../../types';
 import { AppError } from '../../config/AppError';
 
 // ─── GET ALL ─────────────────────────────────────────────────
@@ -165,7 +165,7 @@ export async function assignUserToCase(caseId: number, userId: number, caseRole:
 
   // type responsableValidationTypes = {usuario_id: number, nombre: String, apellido: String, email: String, role_name:String, rol_en_canso: String, asignado_en: Date}
   const CaseTeam = await getCaseTeam(caseId);
-  const already_responsible = CaseTeam.some((member) => member.rol_en_caso === 'Responsable');
+  const already_responsible = CaseTeam.some((member: DataCaseTeam) => member.rol_en_caso === 'Responsable');
   if (already_responsible) {
     throw new AppError('The case already has a lawyer assigned as responsible', 409);
   }
