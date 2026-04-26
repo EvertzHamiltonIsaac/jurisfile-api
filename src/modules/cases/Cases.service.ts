@@ -1,6 +1,7 @@
 import { string } from 'zod';
 import { query, sql } from '../../config/database';
 import { CaseWithDetails } from '../../types';
+import { AppError } from '../../config/AppError';
 
 // ─── GET ALL ─────────────────────────────────────────────────
 // Junior attorneys only see cases they are assigned to.
@@ -166,7 +167,7 @@ export async function assignUserToCase(caseId: number, userId: number, caseRole:
   const CaseTeam = await getCaseTeam(caseId);
   const already_responsible = CaseTeam.some((member) => member.rol_en_caso === 'Responsable');
   if (already_responsible) {
-    throw new Error('The case already has a lawyer assigned as responsible');
+    throw new AppError('The case already has a lawyer assigned as responsible', 409);
   }
 
   const req = await query();

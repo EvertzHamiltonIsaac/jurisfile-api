@@ -8,6 +8,7 @@ import path from 'path';
 import authRoutes from './modules/auth/Auth.routes';
 import clientsRoutes from './modules/clients/Clients.routes';
 import casesRoutes from './modules/cases/Cases.routes';
+import documentsRoutes from './modules/documents/Documents.routes';
 
 import { getPool } from './config/database';
 import { errorHandler, notFoundHandler } from './middlewares/Error.middleware';
@@ -97,7 +98,7 @@ app.get('/health', async (_req, res) => {
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/cases', casesRoutes);
 app.use('/api/clients', clientsRoutes);
-// app.use('/api/documents', documentsRoutes);
+app.use('/api/documents', documentsRoutes);
 // app.use('/api/hearings', hearingsRoutes);
 // app.use('/api/users', usersRoutes);
 

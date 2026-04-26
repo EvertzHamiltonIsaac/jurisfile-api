@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ApiResponse } from '../types/index';
+import { AppError } from '../config/AppError';
 
 // ─── Global error handler ────────────────────────────────────
 // Express calls this automatically when any route calls next(error).
@@ -14,6 +15,14 @@ export function errorHandler(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction,
 ): void {
+  if (err instanceof AppError) {
+    res.status(err.statusCode).json({
+      success: false,
+      message: err.message,
+    });
+    return;
+  }
+
   console.error(`[ERROR] ${req.method} ${req.path}:`, err.message);
 
   // In development show the stack trace, in production hide it
