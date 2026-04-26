@@ -9,8 +9,7 @@ import { JwtPayload, UserWithRole } from '../../types';
 export async function login(email: string, password: string): Promise<string> {
   // Step 1: Find user by email — join Role to get the role name
   const req = await query();
-  const result = await req.input('email', sql.VarChar(150), email)
-    .query<UserWithRole>(`
+  const result = await req.input('email', sql.VarChar(150), email).query<UserWithRole>(`
         SELECT
             u.usuario_id,
             u.nombre,
@@ -25,7 +24,7 @@ export async function login(email: string, password: string): Promise<string> {
     `);
 
   const user = result.recordset[0];
-  console.log(user);
+  // console.log(user);
   // Step 2: User not found
   // IMPORTANT: we give the same error message whether the email
   // doesn't exist or the password is wrong. Never tell an attacker
@@ -36,9 +35,7 @@ export async function login(email: string, password: string): Promise<string> {
 
   // Step 3: Check if account is active
   if (!user.activo) {
-    throw new Error(
-      'Your account has been deactivated. Contact your administrator.',
-    );
+    throw new Error('Your account has been deactivated. Contact your administrator.');
   }
 
   // Step 4: Compare password against stored hash
@@ -53,7 +50,7 @@ export async function login(email: string, password: string): Promise<string> {
   const payload: JwtPayload = {
     userId: user.usuario_id,
     email: user.email,
-    role: user.role_name,
+    role: user.rol_name,
   };
 
   const secret = process.env.JWT_SECRET;
@@ -76,8 +73,7 @@ export async function login(email: string, password: string): Promise<string> {
 // we just fetch fresh data from the DB.
 export async function getProfile(userId: number): Promise<UserWithRole> {
   const req = await query();
-  const result = await req.input('userId', sql.Int, userId)
-    .query<UserWithRole>(`
+  const result = await req.input('userId', sql.Int, userId).query<UserWithRole>(`
       SELECT
           u.usuario_id,
           u.nombre,
